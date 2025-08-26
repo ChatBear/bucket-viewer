@@ -70,3 +70,5 @@ coverage.xml
 .vscode/
 *.swp
 *.swo
+
+.note.txt
