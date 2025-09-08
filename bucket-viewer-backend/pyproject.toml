@@ -8,3 +8,6 @@ dependencies = [
     "boto3>=1.40.19",
     "fastapi[standard]>=0.116.1",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
