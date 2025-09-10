@@ -1,6 +1,7 @@
-import boto3
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 from src.api.routers.main import router
 
 app = FastAPI()
@@ -14,10 +15,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-def main():
-    print("Hello from bucket-viewer-backend!")
-
-
-if __name__ == "__main__":
-    main()
+handler = Mangum(app)
