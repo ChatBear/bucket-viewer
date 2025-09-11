@@ -1,8 +1,8 @@
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
-from src.api.routers.main import router
+
+from .routers.main import router
 
 app = FastAPI()
 app.include_router(router)
@@ -14,5 +14,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+async def hello():
+    return {"message": "Hello from FastAPI on AWS Lambda!"}
+
 
 handler = Mangum(app)

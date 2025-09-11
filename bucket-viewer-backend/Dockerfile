@@ -2,11 +2,15 @@
 FROM public.ecr.aws/lambda/python:3.12
 
 # Copy requirements and install dependencies
-COPY uv.lock pyproject.toml .python-version ${LAMBDA_TASK_ROOT}
+COPY uv.lock pyproject.toml ${LAMBDA_TASK_ROOT}
 RUN pip install uv
-RUN uv sync
-# Copy application code into the container
-COPY ./src ${LAMBDA_TASK_ROOT}/app
 
-# Specify the Lambda function handler (app.main.handler) 
-CMD ["app.api.main.handler"]  
+# Install dependencies system-wide (no venv needed in containers)
+RUN uv pip install --system --no-cache -r <(uv export --format requirements-txt)
+
+# Copy application code into the container
+COPY ./src ${LAMBDA_TASK_ROOT}/src
+
+
+# Specify the Lambda function handler (src.main.handler) 
+CMD ["src.api.main.handler"]  

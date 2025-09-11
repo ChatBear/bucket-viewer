@@ -73,3 +73,22 @@ coverage.xml
 
 .note.txt
 .experi
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+*.tfplan
+*.tfplan.*
+.terraformrc
+terraform.rc
+.terraform.d/
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

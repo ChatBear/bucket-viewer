@@ -8,3 +8,12 @@ terraform {
 
   required_version = ">= 1.2"
 }
+
+resource "aws_s3_bucket" "example" {
+  bucket = "frontend-bucket-viewer"
+
+  tags = {
+    Name        = "Mycket"
+    Environment = "Dev"
+  }
+}
