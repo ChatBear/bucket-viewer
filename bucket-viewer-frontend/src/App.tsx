@@ -1,8 +1,9 @@
-import { ConfigProvider, Layout, Tree, type TreeDataNode } from 'antd';
-import React, { useMemo, useState, type Key } from 'react';
+import { ConfigProvider, Layout, Tree, Typography, type TreeDataNode } from 'antd';
+import React, { useEffect, useMemo, useState, type Key } from 'react';
 import { useBucketData } from './hooks/useBucketData';
 
 const { Content } = Layout
+const { Text } = Typography
 const { DirectoryTree } = Tree
 const App: React.FC = () => {
 
@@ -15,7 +16,9 @@ const App: React.FC = () => {
   //     setPrefix(prefix[prefix.length - 2])
   //   }
 
-
+  useEffect(() => {
+    console.log(bucketData)
+  }, [bucketData])
   const treeData: TreeDataNode[] = useMemo(() => {
     const prefixes = bucketData?.commonPrefixes?.map((prefix) => {
       return {
@@ -60,7 +63,10 @@ const App: React.FC = () => {
                   onExpand={onExpand}
                 />
                 {/* <Button onClick={onClick}> Ok </Button> */}
-              </> : <></>
+              </> :
+              <>
+                <Text> Bucket not found </Text>
+              </>
           }
 
         </Content>

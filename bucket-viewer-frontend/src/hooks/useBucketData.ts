@@ -17,7 +17,7 @@ interface BucketData {
 }
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_API_URL}:${import.meta.env.VITE_DEV_SERVER_PORT}`,
+  baseURL: `${import.meta.env.VITE_BACKEND_API_URL}`,
   timeout: 10000,
 });
 
@@ -26,7 +26,7 @@ const [bucketData, setBucketData] = useState<BucketData | null>(null);
 
   useEffect(() => {
     const fetchBucketData = async () => {
-
+      
        api.get('/bucket', {
           params: {
             prefix: expandedKeys ?? ''
