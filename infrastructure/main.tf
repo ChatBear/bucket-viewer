@@ -17,7 +17,7 @@ provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 }
-// ------------------- REQUESTION CERTIFICATES FOR DOMAIN NAMES -------------------
+// ------------------- REQUEST CERTIFICATES FOR DOMAIN NAMES -------------------
 
 data "aws_route53_zone" "primary" {
   name = "bucket-viewer.org"
@@ -259,4 +259,12 @@ resource "aws_route53_record" "wwwipv6" {
   }
 }
 
+module "lambda" {
+  source            = "./modules/lambda"
+  cloudfront_domain = aws_cloudfront_distribution.s3_distribution.domain_name
 
+}
+
+# module "api-gateway" {
+#   source = "./modules/gateway"
+# }
