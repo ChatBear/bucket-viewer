@@ -52,12 +52,17 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   role       = aws_iam_role.bucket_role.name
 }
 
+data "aws_ecr_image" "lambda_image" {
+  repository_name = var.registry_name
+  image_tag       = "latest"
+}
 
 resource "aws_lambda_function" "bucket-lambda" {
   function_name = "bucket_container_function"
   role          = aws_iam_role.bucket_role.arn
   package_type  = "Image"
-  image_uri     = "${data.aws_ecr_repository.ecr.repository_url}:latest"
+  # image_uri     = "${data.aws_ecr_repository.ecr.repository_url}:latest"
+  image_uri = "${data.aws_ecr_repository.ecr.repository_url}@${data.aws_ecr_image.lambda_image.image_digest}"
 
   memory_size = 512
   timeout     = 30
