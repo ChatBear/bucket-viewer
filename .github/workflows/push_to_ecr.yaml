@@ -12,11 +12,6 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Install Terraform CLI
-        run: |
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.9.5"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -32,14 +27,22 @@ jobs:
       - name: building the docker image and push it into ECR
         run: |
           cd bucket-viewer-backend
-          docker build -t ${{ secrets.IMAGE_NAME }} --platform=arm64 .
+          docker build -t ${{ secrets.IMAGE_NAME }} .
           docker tag ${{ secrets.ECR_REPO_NAME }}:latest ${{ secrets.ECR_REPO_URI }}:latest
           docker push ${{ secrets.ECR_REPO_URI }}:latest
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build-push-ecr
+    steps:
+      - name: Install Terraform CLI
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.5"
       - name: Deploy with Terraform
         run: |
           cd infrastructure
           terraform init
-          terraform plan -target=module.lambda
-          terraform apply -target=module.lambda -auto-approve
-
-      # Add any additional inputs this action supports
+          terraform plan
+          terraform apply -auto-approve
