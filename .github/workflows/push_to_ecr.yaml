@@ -39,7 +39,7 @@ jobs:
         run: |
           cd infrastructure
           terraform init
-          terraform plan 
-          terraform apply -auto-approve
+          terraform plan -target=module.lambda
+          terraform apply -target=module.lambda -auto-approve
 
       # Add any additional inputs this action supports
