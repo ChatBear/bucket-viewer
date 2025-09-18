@@ -1,0 +1,55 @@
+name: Release Frontend
+run-name: ${{ github.actor }} is running frontend CD
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v3
+          with:
+              role-to-assume: arn:aws:iam::491085404969:role/terraform-20250918070808106700000001
+              role-session-name: GitHub_to_AWS_via_FederatedOIDC
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Clean install
+        run: |
+          cd bucket-viewer-frontend
+          npm ci
+      - name: Build project
+        run: cd bucket-viewer-frontend && npm run build
+      - name: Upload files to S3 
+        run: |
+          cd bucket-viewer-frontend
+
+          # Upload with long short time for assert files 
+          aws s3 sync dist/ s3://frontend-bu-viewer \
+            --delete \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "*.html" \
+            --exclude "*.json"
+          
+          # Upload HTML/JSON with short cache time.
+          aws s3 sync dist/ s3://frontend-bu-viewer \
+            --cache-control "public,max-age=300,must-revalidate" \
+            --include "*.html" \
+            --include "*.json"
+
+          # Get CloudFront distribution ID
+          DISTRIBUTION_ID=$(aws cloudfront list-distributions \
+            --query "DistributionList.Items[?Aliases.Items[?contains(@, 'ft.bucket-viewer.org')]].Id" \
+            --output text)
+          
+          # Invalidate CloudFront cache
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/*"

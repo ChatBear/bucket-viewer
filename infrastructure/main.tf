@@ -1,4 +1,13 @@
 terraform {
+  backend "s3" {
+    bucket         = "bucket-viewer-terraform-state-fdc139ae"
+    key            = "bucket-viewer/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "terraform-state-locks"
+    encrypt        = true
+  }
+
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -265,6 +274,9 @@ module "lambda" {
 
 }
 
-# module "api-gateway" {
-#   source = "./modules/gateway"
-# }
+module "infrastructure-locking" {
+  source = "./modules/state_locking"
+}
+module "oicd" {
+  source = "./modules/oicd_resource"
+}
