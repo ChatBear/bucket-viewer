@@ -1,4 +1,4 @@
-import { ConfigProvider, Layout, Tree, Typography, type TreeDataNode } from 'antd';
+import { Button, ConfigProvider, Layout, Tree, Typography, type TreeDataNode } from 'antd';
 import React, { useEffect, useMemo, useState, type Key } from 'react';
 import { useBucketData } from './hooks/useBucketData';
 
@@ -62,13 +62,12 @@ const App: React.FC = () => {
                   treeData={treeData}
                   onExpand={onExpand}
                 />
-                {/* <Button onClick={onClick}> Ok </Button> */}
               </> :
               <>
                 <Text> Bucket not found </Text>
               </>
           }
-
+          <Button onClick={() => { }}> Ok </Button>
         </Content>
       </Layout>
     </ConfigProvider >
