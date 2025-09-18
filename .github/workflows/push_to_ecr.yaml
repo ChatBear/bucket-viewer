@@ -37,7 +37,7 @@ jobs:
     needs: build-push-ecr
     steps:
       - name: Install Terraform CLI
-      - uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.9.5"
       - name: Deploy with Terraform
