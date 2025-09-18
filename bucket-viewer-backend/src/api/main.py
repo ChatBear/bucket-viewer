@@ -28,7 +28,9 @@ app.add_middleware(
 
 @app.get("/")
 async def hello():
-    return {"message": "Hello from FastAPI and Cloudfront on AWS Lambda!"}
+    return {
+        "message": "Hello from FastAPI and Cloudfront and From Github Actions on AWS Lambda!"
+    }
 
 
 handler = Mangum(app)

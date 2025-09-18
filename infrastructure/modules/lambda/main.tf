@@ -67,7 +67,7 @@ resource "aws_lambda_function" "bucket-lambda" {
   memory_size = 512
   timeout     = 30
 
-  architectures = ["arm64"] # Graviton support for better price/performance
+  architectures = ["x86_64"] # Graviton support for better price/performance
 
   environment {
     variables = {
