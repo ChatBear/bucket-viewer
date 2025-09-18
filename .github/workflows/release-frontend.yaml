@@ -2,7 +2,7 @@ name: Release Frontend
 run-name: ${{ github.actor }} is running frontend CD
 on:
   push:
-    branches: [main-disabled]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -30,6 +30,8 @@ jobs:
           cd bucket-viewer-frontend
           npm ci
       - name: Build project
+        env:
+          VITE_BACKEND_API_URL: ${{ secrets.VITE_API_URL }}
         run: cd bucket-viewer-frontend && npm run build
       - name: Upload files to S3
         run: |

@@ -1,0 +1,25 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches: ["main-disabled"]
+
+jobs:
+  build-push-ecr:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-region: "ap-southeast-1"
+          role-to-assume: arn:aws:iam::491085404969:role/terraform-20250918070808106700000001
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: building the docker image and push it into ECR 
+        run: |
+          docker build -t bucket-viewer . 
+      # Add any additional inputs this action supports
