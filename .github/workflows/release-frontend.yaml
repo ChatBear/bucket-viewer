@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch
 permissions:
   id-token: write
   contents: write
@@ -50,7 +50,7 @@ jobs:
             --include "*.html" \
             --include "*.json"
 
-          # Get CloudFront distribution ID
+          # Get CloudFront distribution IDs
           DISTRIBUTION_ID=$(aws cloudfront list-distributions \
             --query "DistributionList.Items[?Aliases.Items[?contains(@, 'ft.bucket-viewer.org')]].Id" \
             --output text)

@@ -3,7 +3,10 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches: ["main-disabled"]
-
+  workflow_dispatch
+permissions:
+  id-token: write
+  contents: write
 jobs:
   build-push-ecr:
     name: Deploy
