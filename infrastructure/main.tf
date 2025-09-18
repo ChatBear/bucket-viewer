@@ -277,3 +277,6 @@ module "lambda" {
 module "infrastructure-locking" {
   source = "./modules/state_locking"
 }
+module "oicd" {
+  source = "./modules/oicd_resource"
+}

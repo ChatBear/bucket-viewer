@@ -59,30 +59,3 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 }
 
-# Output the bucket name and DynamoDB table name
-output "s3_bucket_name" {
-  value       = aws_s3_bucket.terraform_state.bucket
-  description = "Name of the S3 bucket for Terraform state"
-}
-
-output "dynamodb_table_name" {
-  value       = aws_dynamodb_table.terraform_locks.name
-  description = "Name of the DynamoDB table for state locking"
-}
-
-output "backend_configuration" {
-  value       = <<-EOT
-    Add this to your main.tf:
-    
-    terraform {
-      backend "s3" {
-        bucket         = "${aws_s3_bucket.terraform_state.bucket}"
-        key            = "bucket-viewer/terraform.tfstate"
-        region         = "ap-southeast-1"
-        dynamodb_table = "${aws_dynamodb_table.terraform_locks.name}"
-        encrypt        = true
-      }
-    }
-  EOT
-  description = "Backend configuration to add to your main Terraform files"
-}
