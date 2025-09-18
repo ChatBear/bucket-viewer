@@ -19,8 +19,8 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: building the docker image and push it into ECR 
+      - name: building the docker image and push it into ECR
         run: |
-          docker build -t bucket-viewer .
+          docker build -t ${{ secrets.IMAGE_NAME }} .
           
       # Add any additional inputs this action supports
