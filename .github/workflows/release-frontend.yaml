@@ -52,7 +52,7 @@ jobs:
 
           # Get CloudFront distribution ID
           DISTRIBUTION_ID=$(aws cloudfront list-distributions \
-            --query "DistributionList.Items[?Aliases.Items[?contains(@, ${{ secrets.BUCKET_NAME_FRONTEND }})]].Id" \
+            --query "DistributionList.Items[?Aliases.Items[?contains(@, ${{ secrets.DOMAIN_NAME }})]].Id" \
             --output text)
 
           # Invalidate CloudFront cache
