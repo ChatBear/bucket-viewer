@@ -1,5 +1,5 @@
 # Use the official AWS Lambda Python 3.12 base image
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12-arm64
 
 # Copy requirements and install dependencies
 COPY uv.lock pyproject.toml ${LAMBDA_TASK_ROOT}
