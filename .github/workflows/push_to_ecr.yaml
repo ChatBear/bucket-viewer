@@ -32,7 +32,7 @@ jobs:
       - name: building the docker image and push it into ECR
         run: |
           cd bucket-viewer-backend
-          docker build -t ${{ secrets.IMAGE_NAME }} .
+          docker build -t ${{ secrets.IMAGE_NAME }} --platform=arm64 .
           docker tag ${{ secrets.ECR_REPO_NAME }}:latest ${{ secrets.ECR_REPO_URI }}:latest
           docker push ${{ secrets.ECR_REPO_URI }}:latest
       - name: Deploy with Terraform
