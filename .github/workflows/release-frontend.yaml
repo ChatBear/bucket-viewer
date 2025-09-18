@@ -31,7 +31,7 @@ jobs:
           npm ci
       - name: Build project
         env:
-          VITE_BACKEND_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_BACKEND_API_URL: ${{ secrets.VITE_BACKEND_API_URL }}
         run: cd bucket-viewer-frontend && npm run build
       - name: Upload files to S3
         run: |
