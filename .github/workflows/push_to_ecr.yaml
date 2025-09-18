@@ -22,5 +22,6 @@ jobs:
       - name: building the docker image and push it into ECR
         run: |
           docker build -t ${{ secrets.IMAGE_NAME }} .
-          
+          docker tag bucket-viewer:latest 491085404969.dkr.ecr.ap-southeast-1.amazonaws.com/bucket-viewer:latest
+          docker push 491085404969.dkr.ecr.ap-southeast-1.amazonaws.com/bucket-viewer:latest
       # Add any additional inputs this action supports
