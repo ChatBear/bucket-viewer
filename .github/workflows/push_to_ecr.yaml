@@ -2,7 +2,7 @@ name: Deploy to AWS Lambda
 
 on:
   push:
-    branches: ["main-disabled"]
+    branches: ["main"]
   workflow_dispatch:
 permissions:
   id-token: write
