@@ -10,7 +10,7 @@ permissions:
 jobs:
   build-push-ecr:
     name: Deploy
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     steps:
       - name: Install Terraform CLI
         run: |
