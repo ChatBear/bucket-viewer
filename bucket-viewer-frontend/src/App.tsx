@@ -67,7 +67,7 @@ const App: React.FC = () => {
                 <Text> Bucket not found DOMAIN ALLOWED</Text>
               </>
           }
-          <Button onClick={() => { }}> Ok  : {import.meta.env.VITE_BACKEND_API_URL}  </Button>
+          <Button onClick={() => { }}> Ok  </Button>
         </Content>
       </Layout>
     </ConfigProvider >
