@@ -16,7 +16,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          aws-region: ${{ secrets.AWS_REGION_1 }}
+          aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
       - name: Check out repository

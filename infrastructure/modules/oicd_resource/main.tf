@@ -123,6 +123,34 @@ resource "aws_iam_policy" "cloudfront_policy" {
   })
 }
 
+# Policy for DynamoDB operations
+resource "aws_iam_policy" "dynamodb_policy" {
+  name        = "github-actions-dynamodb-policy"
+  description = "Policy for GitHub Actions to access DynamoDB"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Scan",
+          "dynamodb:Query",
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:DescribeTable"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
 
 # Attache the policies to the role
 resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
@@ -145,4 +173,8 @@ resource "aws_iam_role_policy_attachment" "cloudfront_policy_attachment" {
   role       = aws_iam_role.github_actions.name
 }
 
+resource "aws_iam_role_policy_attachment" "dynamodb_policy_attachment" {
+  policy_arn = aws_iam_policy.dynamodb_policy.arn
+  role       = aws_iam_role.github_actions.name
+}
 

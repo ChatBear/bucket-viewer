@@ -12,27 +12,30 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
-
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          aws-region: "ap-southeast-1"
-          role-to-assume: arn:aws:iam::491085404969:role/terraform-20250918070808106700000001
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-
       - name: Check out repository
         uses: actions/checkout@v4
-
       - name: Login to ECR
         run: |
-          aws ecr get-login-password --region ${{ secrets.REGION_NAME_1 }} | \
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
           docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
-
       - name: building the docker image and push it into ECR
         run: |
+          cd bucket-viewer-backend
           docker build -t ${{ secrets.IMAGE_NAME }} .
           docker tag ${{ secrets.ECR_REPO_NAME }}:latest ${{ secrets.ECR_REPO_URI }}:latest
           docker push ${{ secrets.ECR_REPO_URI }}:latest
+      - name: Deploy with Terraform
+        run: |
+          cd infrastructure
+          terraform init
+          terraform plan 
+          terraform apply -auto-approve
 
       # Add any additional inputs this action supports
