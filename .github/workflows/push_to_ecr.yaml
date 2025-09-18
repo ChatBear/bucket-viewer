@@ -3,7 +3,7 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches: ["main-disabled"]
-  workflow_dispatch
+  workflow_dispatch:
 permissions:
   id-token: write
   contents: write
@@ -20,11 +20,19 @@ jobs:
           aws-region: "ap-southeast-1"
           role-to-assume: arn:aws:iam::491085404969:role/terraform-20250918070808106700000001
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
+
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.REGION_NAME_1 }} | \
+          docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
+
       - name: building the docker image and push it into ECR
         run: |
           docker build -t ${{ secrets.IMAGE_NAME }} .
-          docker tag bucket-viewer:latest 491085404969.dkr.ecr.ap-southeast-1.amazonaws.com/bucket-viewer:latest
-          docker push 491085404969.dkr.ecr.ap-southeast-1.amazonaws.com/bucket-viewer:latest
+          docker tag ${{ secrets.ECR_REPO_NAME }}:latest ${{ secrets.ECR_REPO_URI }}:latest
+          docker push ${{ secrets.ECR_REPO_URI }}:latest
+
       # Add any additional inputs this action supports
