@@ -44,4 +44,4 @@ def list_object(prefix: str = Query(default="")):
     return files
 
 
-@bucket_router.post("", response_model=ListObjectsResponse)
+# @bucket_router.post("", response_model=ListObjectsResponse)
