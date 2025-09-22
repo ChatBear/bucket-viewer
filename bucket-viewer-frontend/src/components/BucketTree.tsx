@@ -20,15 +20,7 @@ const BucketTree = ({ prefix, setPrefix }: BucketTreeProp) => {
         return;
     }
 
-    // const onClick = () => {
-    //   if (prefix) {
-    //     // JE VEUX ICI FAIRE UN BOUTON RETOUR 
-    //     setPrefix(prefix[prefix.length - 2])
-    //   }
 
-    // useEffect(() => {
-    //   console.log(loading)
-    // }, [bucketData, loading])
 
     const treeData: TreeDataNode[] = useMemo(() => {
         const prefixes = bucketData?.commonPrefixes?.map((prefix) => {

@@ -8,16 +8,6 @@ const App: React.FC = () => {
 
   const [prefix, setPrefix] = useState<Key>("")
 
-  // const onClick = () => {
-  //   if (prefix) {
-  //     // JE VEUX ICI FAIRE UN BOUTON RETOUR 
-  //     setPrefix(prefix[prefix.length - 2])
-  //   }
-
-  // useEffect(() => {
-  //   console.log(loading)
-  // }, [bucketData, loading])
-
 
   return (
     <ConfigProvider>
@@ -29,7 +19,7 @@ const App: React.FC = () => {
           flexDirection: 'column',
           gap: '16px',
         }}>
-          <BackButton prefix={prefix} setPrefix={setPrefix} />
+          <BackButton prefix={prefix as string} setPrefix={setPrefix} />
           <BucketTree
             prefix={prefix}
             setPrefix={setPrefix}

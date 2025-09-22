@@ -1,12 +1,22 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from "antd";
-import type { Key } from "react";
 type BackButtonProps = {
-    prefix: Key;
-    setPrefix: (prefix: Key) => void;
+    prefix: string;
+    setPrefix: (prefix: string) => void;
 }
 const BackButton = ({ prefix, setPrefix }: BackButtonProps) => {
-    const onClick = () => { }
+    const onClick = () => {
+        const prefixList = prefix.split("/")
+        prefixList.pop()
+        prefixList.pop()
+
+        if (prefixList.join("/") + "/" === "/") {
+            setPrefix("")
+        } else {
+            setPrefix(prefixList.join("/") + "/")
+        }
+
+    }
     return <Button onClick={onClick}> <ArrowLeftOutlined /></Button >
 }
 

@@ -32,7 +32,6 @@ const [loading, setLoading] = useState<boolean>(true)
             prefix: expandedKeys ?? ''
           }
         }).then((response) => {
-          console.log(response)
           setBucketData(response.data);
         })
         .catch((err) => {
