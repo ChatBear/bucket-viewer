@@ -23,10 +23,10 @@ const api = axios.create({
 
 export const useBucketData = (expandedKeys: Key | undefined) => {
 const [bucketData, setBucketData] = useState<BucketData | null>(null);
-
+const [loading, setLoading] = useState<boolean>(true)
   useEffect(() => {
     const fetchBucketData = async () => {
-      
+       await new Promise(resolve => setTimeout(resolve, 1000));
        api.get('/bucket', {
           params: {
             prefix: expandedKeys ?? ''
@@ -38,11 +38,13 @@ const [bucketData, setBucketData] = useState<BucketData | null>(null);
         .catch((err) => {
           console.log(err)
           setBucketData(null);
+        }).finally(() => {
+          setLoading(false)
         })
       }
       fetchBucketData();
   }, [expandedKeys]);
 
   
-  return {bucketData};
+  return {bucketData, loading};
 };

@@ -1,14 +1,12 @@
-import { Button, ConfigProvider, Layout, Tree, Typography, type TreeDataNode } from 'antd';
-import React, { useEffect, useMemo, useState, type Key } from 'react';
-import { useBucketData } from './hooks/useBucketData';
+import { ConfigProvider, Layout } from 'antd';
+import React, { useState, type Key } from 'react';
+import BackButton from './components/BackButton';
+import BucketTree from './components/BucketTree';
 
 const { Content } = Layout
-const { Text } = Typography
-const { DirectoryTree } = Tree
 const App: React.FC = () => {
 
   const [prefix, setPrefix] = useState<Key>("")
-  const { bucketData } = useBucketData(prefix)
 
   // const onClick = () => {
   //   if (prefix) {
@@ -16,31 +14,11 @@ const App: React.FC = () => {
   //     setPrefix(prefix[prefix.length - 2])
   //   }
 
-  useEffect(() => {
-    console.log(bucketData)
-  }, [bucketData])
-  const treeData: TreeDataNode[] = useMemo(() => {
-    const prefixes = bucketData?.commonPrefixes?.map((prefix) => {
-      return {
-        title: prefix.Prefix,
-        key: prefix.Prefix,
-        expandAction: true,
-      }
-    }) ?? []
+  // useEffect(() => {
+  //   console.log(loading)
+  // }, [bucketData, loading])
 
-    const contents = bucketData?.contents?.map((content) => {
-      return {
-        title: content.Key,
-        key: content.Key
-      }
-    }) ?? []
-    return [...prefixes, ...contents]
-  }, [prefix, bucketData])
 
-  const onExpand = (expandedKeys: Key[]) => {
-    setPrefix(expandedKeys[expandedKeys.length - 1])
-    return;
-  }
   return (
     <ConfigProvider>
       <Layout style={{ minHeight: '90vh' }}>
@@ -51,23 +29,12 @@ const App: React.FC = () => {
           flexDirection: 'column',
           gap: '16px',
         }}>
-          {
-            bucketData ?
-              <>
-                <DirectoryTree
-                  selectable={false}
-                  style={{
-                    minWidth: "50vh"
-                  }}
-                  treeData={treeData}
-                  onExpand={onExpand}
-                />
-              </> :
-              <>
-                <Text> Bucket not found DOMAIN ALLOWED</Text>
-              </>
-          }
-          <Button onClick={() => { }}> Ok  </Button>
+          <BackButton prefix={prefix} setPrefix={setPrefix} />
+          <BucketTree
+            prefix={prefix}
+            setPrefix={setPrefix}
+          />
+
         </Content>
       </Layout>
     </ConfigProvider >
