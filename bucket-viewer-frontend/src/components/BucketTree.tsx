@@ -1,6 +1,6 @@
 import { Spin, Tree, Typography, type TreeDataNode } from 'antd'
 import { useMemo, type Key } from 'react'
-import { useBucketData } from '../hooks/useBucketData'
+import type { BucketData } from '../hooks/useBucketData'
 
 
 const { DirectoryTree } = Tree
@@ -9,11 +9,12 @@ const { Text } = Typography
 type BucketTreeProp = {
     prefix: Key;
     setPrefix: (prefix: Key) => void;
+    bucketData: BucketData | null
+    loading: boolean
 }
 
-const BucketTree = ({ prefix, setPrefix }: BucketTreeProp) => {
+const BucketTree = ({ prefix, setPrefix, bucketData, loading }: BucketTreeProp) => {
 
-    const { bucketData, loading } = useBucketData(prefix)
 
     const onExpand = (expandedKeys: Key[]) => {
         setPrefix(expandedKeys[expandedKeys.length - 1])

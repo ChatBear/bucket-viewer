@@ -3,8 +3,9 @@ import { Button } from "antd";
 type BackButtonProps = {
     prefix: string;
     setPrefix: (prefix: string) => void;
+    loading: boolean
 }
-const BackButton = ({ prefix, setPrefix }: BackButtonProps) => {
+const BackButton = ({ prefix, setPrefix, loading }: BackButtonProps) => {
     const onClick = () => {
         const prefixList = prefix.split("/")
         prefixList.pop()
@@ -17,7 +18,7 @@ const BackButton = ({ prefix, setPrefix }: BackButtonProps) => {
         }
 
     }
-    return <Button onClick={onClick}> <ArrowLeftOutlined /></Button >
+    return <Button onClick={onClick} loading={loading}> <ArrowLeftOutlined /></Button >
 }
 
 export default BackButton

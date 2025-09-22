@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, type Key } from "react";
 
-interface BucketData {
+export interface BucketData {
   commonPrefixes: {
           Prefix: Key
     }[],
@@ -26,6 +26,7 @@ const [bucketData, setBucketData] = useState<BucketData | null>(null);
 const [loading, setLoading] = useState<boolean>(true)
   useEffect(() => {
     const fetchBucketData = async () => {
+      setLoading(true)
        await new Promise(resolve => setTimeout(resolve, 1000));
        api.get('/bucket', {
           params: {
