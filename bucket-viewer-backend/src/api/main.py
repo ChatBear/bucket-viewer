@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import Annotated
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

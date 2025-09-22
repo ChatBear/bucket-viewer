@@ -1,5 +1,6 @@
-import { Spin, Tree, Typography, type TreeDataNode } from 'antd'
-import { useMemo, type Key } from 'react'
+import { DeleteOutlined, DownloadOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Spin, Tree, Typography, type MenuProps, type TreeDataNode } from 'antd'
+import { useMemo, useState, type Key } from 'react'
 import type { BucketData } from '../hooks/useBucketData'
 
 
@@ -14,12 +15,34 @@ type BucketTreeProp = {
 }
 
 const BucketTree = ({ prefix, setPrefix, bucketData, loading }: BucketTreeProp) => {
+    // TODO : Try to load all children when the parent is showed to improve UX. Use loadData component. 
 
+    const [expandedKeys, setExpandedKeys] = useState([])
 
     const onExpand = (expandedKeys: Key[]) => {
         setPrefix(expandedKeys[expandedKeys.length - 1])
+        setExpandedKeys([])
         return;
     }
+
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <Button color="default" variant='text'> Download </Button>
+            ),
+            icon: <DownloadOutlined />,
+            disabled: true
+        },
+        {
+            key: '2',
+            label: (
+                <Button color="default" variant='text'> Delete </Button>
+            ),
+            icon: < DeleteOutlined />,
+            disabled: true,
+        },
+    ];
 
 
 
@@ -29,13 +52,15 @@ const BucketTree = ({ prefix, setPrefix, bucketData, loading }: BucketTreeProp) 
                 title: prefix.Prefix,
                 key: prefix.Prefix,
                 expandAction: true,
+
             }
         }) ?? []
 
         const contents = bucketData?.contents?.map((content) => {
             return {
-                title: content.Key,
-                key: content.Key
+                title: <Dropdown menu={{ items }} placement='bottomRight' trigger={["click"]}><span>{content.Key} </span></Dropdown>,
+                key: content.Key,
+                isLeaf: true,
             }
         }) ?? []
         return [...prefixes, ...contents]
@@ -49,6 +74,8 @@ const BucketTree = ({ prefix, setPrefix, bucketData, loading }: BucketTreeProp) 
                 }}
                 treeData={treeData}
                 onExpand={onExpand}
+                expandedKeys={expandedKeys}
+                onRightClick={(value) => console.log(value)}
             />
         ) : (
             <Text>Bucket not found</Text>

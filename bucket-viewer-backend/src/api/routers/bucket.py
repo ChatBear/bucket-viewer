@@ -42,3 +42,6 @@ def list_object(prefix: str = Query(default="")):
         files["commonPrefixes"] = res["CommonPrefixes"]
 
     return files
+
+
+@bucket_router.post("", response_model=ListObjectsResponse)

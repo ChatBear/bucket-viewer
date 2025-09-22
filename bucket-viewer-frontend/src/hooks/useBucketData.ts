@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState, type Key } from "react";
+import { api } from '../services/object-service';
 
 export interface BucketData {
   commonPrefixes: {
@@ -16,10 +16,7 @@ export interface BucketData {
     }[]
 }
 
-const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_API_URL}`,
-  timeout: 10000,
-});
+
 
 export const useBucketData = (expandedKeys: Key | undefined) => {
 const [bucketData, setBucketData] = useState<BucketData | null>(null);
