@@ -21,27 +21,31 @@ export interface BucketData {
 export const useBucketData = (expandedKeys: Key | undefined) => {
 const [bucketData, setBucketData] = useState<BucketData | null>(null);
 const [loading, setLoading] = useState<boolean>(true)
-  useEffect(() => {
-    const fetchBucketData = async () => {
-      setLoading(true)
-       await new Promise(resolve => setTimeout(resolve, 1000));
-       api.get('/bucket', {
-          params: {
-            prefix: expandedKeys ?? ''
-          }
-        }).then((response) => {
-          setBucketData(response.data);
-        })
-        .catch((err) => {
-          console.log(err)
-          setBucketData(null);
-        }).finally(() => {
-          setLoading(false)
-        })
+const fetchBucketData = async () => {
+  setLoading(true)
+  //  await new Promise(resolve => setTimeout(resolve, 1000));
+   api.get('/bucket', {
+      params: {
+        prefix: expandedKeys ?? ''
       }
+    }).then((response) => {
+      setBucketData(response.data);
+    })
+    .catch((err) => {
+      console.log(err)
+      setBucketData(null);
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
+
+useEffect(() => {
       fetchBucketData();
   }, [expandedKeys]);
 
+  const refresh = () => {
+    fetchBucketData();
+  }
   
-  return {bucketData, loading};
+  return {bucketData, loading, refresh};
 };

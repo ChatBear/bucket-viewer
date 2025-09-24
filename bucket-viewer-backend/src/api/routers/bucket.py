@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 
 import boto3
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, status
 from pydantic import BaseModel
 
 bucket_router = APIRouter(prefix="/bucket", tags=["bucket"])
@@ -31,6 +31,7 @@ class ListObjectsResponse(BaseModel):
 
 @bucket_router.get("", response_model=ListObjectsResponse)
 def list_object(prefix: str = Query(default="")):
+    # Error handling needed here
     files = {}
     if prefix:
         res = client.list_objects_v2(Bucket=BUCKET_NAME, Delimiter="/", Prefix=prefix)
@@ -44,4 +45,14 @@ def list_object(prefix: str = Query(default="")):
     return files
 
 
-# @bucket_router.post("", response_model=ListObjectsResponse)
+@bucket_router.delete("")
+def delete_object(key_file: str):
+    key_file = key_file.replace(",", "/")
+    # Error handling needed here
+    if key_file:
+        res = client.delete_object(Bucket=BUCKET_NAME, Key=key_file)
+        print(res)
+        if res["ResponseMetadata"]["HTTPStatusCode"] == 204:
+            return status.HTTP_204_NO_CONTENT
+    else:
+        return status.HTTP_400_BAD_REQUEST

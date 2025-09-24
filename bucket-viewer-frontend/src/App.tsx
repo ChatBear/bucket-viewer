@@ -8,7 +8,7 @@ const { Content } = Layout
 const App: React.FC = () => {
 
   const [prefix, setPrefix] = useState<Key>("")
-  const { bucketData, loading } = useBucketData(prefix)
+  const { bucketData, loading, refresh } = useBucketData(prefix)
 
 
   return (
@@ -27,6 +27,7 @@ const App: React.FC = () => {
             setPrefix={setPrefix}
             bucketData={bucketData}
             loading={loading}
+            refresh={refresh}
           />
 
         </Content>
