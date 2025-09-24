@@ -2,12 +2,16 @@ from datetime import datetime
 from typing import List, Optional
 
 import boto3
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, File, Form, Query, UploadFile, status
 from pydantic import BaseModel
 
 bucket_router = APIRouter(prefix="/bucket", tags=["bucket"])
 client = boto3.client("s3")
 BUCKET_NAME = "sample-bucket-viewer"
+
+
+class UploadData(BaseModel):
+    Key: str
 
 
 class S3Object(BaseModel):
@@ -51,8 +55,36 @@ def delete_object(key_file: str):
     # Error handling needed here
     if key_file:
         res = client.delete_object(Bucket=BUCKET_NAME, Key=key_file)
-        print(res)
         if res["ResponseMetadata"]["HTTPStatusCode"] == 204:
             return status.HTTP_204_NO_CONTENT
     else:
         return status.HTTP_400_BAD_REQUEST
+
+
+@bucket_router.post("")
+def upload_object(file: UploadFile = File(...), key: str = Form(...)):
+    if key:
+        client.upload_fileobj(
+            Fileobj=file.file,
+            Bucket=BUCKET_NAME,
+            Key=f"{key}{file.filename}",
+        )
+    else:
+        client.upload_fileobj(Fileobj=file.file, Bucket=BUCKET_NAME, Key=file.filename)
+
+    return
+
+
+@bucket_router.get("/presign_url")
+def get_presiegn_url(keyFile: str):
+    if not keyFile:
+        return status.HTTP_400_BAD_REQUEST
+    try:
+        response = client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": BUCKET_NAME, "Key": keyFile},
+        )
+
+        return response
+    except Exception as e:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR
