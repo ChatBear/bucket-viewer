@@ -21,9 +21,7 @@ resource "aws_iam_role" "github_actions" {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
         }
         StringEquals = {
-          "token.actions.githubusercontent.com:sub" = "repo:ChatBear/bucket-viewer:ref:refs/heads/main"
           "token.actions.githubusercontent.com:sub" = "repo:ChatBear/bucket-viewer:environment:production:ref:refs/heads/main"
-
         }
       }
     }]
