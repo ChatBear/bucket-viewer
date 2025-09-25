@@ -12,6 +12,8 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
+    name: Build and push to S3
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3

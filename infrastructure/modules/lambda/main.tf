@@ -25,6 +25,8 @@ data "aws_iam_policy_document" "s3_read_access" {
       "s3:GetObject",
       "s3:ListBucket",
       "s3:ListObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
     ]
 
     resources = [
@@ -61,13 +63,12 @@ resource "aws_lambda_function" "bucket-lambda" {
   function_name = "bucket_container_function"
   role          = aws_iam_role.bucket_role.arn
   package_type  = "Image"
-  # image_uri     = "${data.aws_ecr_repository.ecr.repository_url}:latest"
-  image_uri = "${data.aws_ecr_repository.ecr.repository_url}@${data.aws_ecr_image.lambda_image.image_digest}"
+  image_uri     = "${data.aws_ecr_repository.ecr.repository_url}@${data.aws_ecr_image.lambda_image.image_digest}"
 
   memory_size = 512
   timeout     = 30
 
-  architectures = ["x86_64"] # Graviton support for better price/performance
+  architectures = ["x86_64"]
 
   environment {
     variables = {
