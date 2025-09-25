@@ -19,11 +19,8 @@ resource "aws_iam_role" "github_actions" {
       Condition = {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
-          "token.actions.githubusercontent.com:sub" : "repo:ChatBear/bucket-viewer:environment:production"
+          "token.actions.githubusercontent.com:sub" : "repo:ChatBear/bucket-viewer:*"
         }
-        # StringEquals = {
-        #    = "repo:ChatBear/bucket-viewer:environment:production:ref:refs/heads/main"
-        # }
       }
     }]
   })
